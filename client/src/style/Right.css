@@ -1,0 +1,82 @@
+.right-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: white;
+    justify-content: center;
+    background-color: black;
+    padding-top: 2%;
+}
+.search{
+    width: 80%;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    border: 1px solid gray;
+    margin-top: 5%;
+    justify-content: center;
+    padding: 1%;
+}
+.search-icon{
+    font-size: 20px;
+    color: gray;
+    padding: 1% 2% 1% 2%;
+}
+.search input{
+    background-color: black;
+    border: none;
+    width: 90%;
+}
+.premium{
+    margin: 5% 0 5% 0;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid gray;
+    padding: 3%;
+    border-radius: 15px;
+}
+.premium h1{
+    font-size: 25px;
+    color: white;
+}
+.premium p{
+    margin: 2% 0 2% 0;
+    color: whitesmoke;
+}
+.subscribe {
+    margin-top: 3%;
+    font-size: 18px;
+    width: 35%;
+    background-color: #1d9bf0;
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.subscribe:hover {
+    background-color: #0d8af0;
+}
+.trending{
+    border: 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 3%;
+    border-radius: 15px;
+}
+.to-follow{
+    margin-top: 4%;
+    border: 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 3%;
+    border-radius: 15px;
+    width: 100%;
+}
