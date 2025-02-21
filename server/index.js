@@ -5,6 +5,7 @@ import connection from './config/dbConfig.js'
 import { signin, signup } from './routes/SingUp.js'
 import { createTwitte, deleteTwitte, getAllTwitte, getTwitte, updateTwitte } from './routes/Twitte.js'
 import { addDetail, getDetail } from './routes/PDetail.js'
+import { addActivity, twitteeActivity } from './routes/activity.js'
 
 dotenv.config()
 const app=express()
@@ -19,6 +20,10 @@ app.use('/',signup)
 //      Personal Detail
 app.use('/',addDetail);
 app.use('/',getDetail);
+
+//      Twitte Activity
+app.use('/',addActivity)
+app.use('/',twitteeActivity)
 
 
 //      CRUD On Twitte 

@@ -13,7 +13,8 @@ async function signInController(req,res) {
             if(isValid){
                 const id=findUser[0].id
                 const isDetail=await db.query('SELECT * FROM PDETAIL WHERE userid=?',[id])
-                if(isDetail.length>0){
+                console.log(isDetail[0].length>0)
+                if(isDetail[0].length>0){
                     const token=await jwt.sign({user:findUser},process.env.SECRET_KEY,{expiresIn:'1h'})
                     const encryptedData=await encryptData({message:"login success",isDetail:true,user:isDetail[0],userid:findUser[0].id,token,success:true})
                     return res.status(200).json({data:encryptedData})

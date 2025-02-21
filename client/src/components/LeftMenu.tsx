@@ -12,8 +12,10 @@ import { useNavigate } from 'react-router-dom';
 
 function LeftMenu() {
     const navigate=useNavigate()
-    const user=JSON.parse(localStorage.getItem('user') || '')
-    console.log(user[0].username)
+    const user = localStorage.getItem('user');
+    const parsedUser = user && user !== 'undefined' ? JSON.parse(user) : '';
+
+    //console.log(user[0].username)
     const handleLogout=()=>{
         localStorage.clear();
         navigate('/')

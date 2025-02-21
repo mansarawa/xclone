@@ -90,8 +90,11 @@ const WelcomePage: React.FC = () => {
             localStorage.clear()
             localStorage.setItem('data',JSON.stringify(result))
 
-            localStorage.setItem('token',JSON.stringify(result.token))
-            localStorage.setItem('user',JSON.stringify(result.user))
+            localStorage.setItem('token',result.token)
+            if(result.user){
+
+                localStorage.setItem('user',JSON.stringify(result.user))
+            }
             navigate('/home')
         }
         else{
@@ -165,14 +168,19 @@ const WelcomePage: React.FC = () => {
                 <div className="modal-overlay">
                     <form className="modal-content" onSubmit={handleLogSubmit}>
                         <button className="close-button" onClick={() => setLogModalOpen(false)}>✖</button>
-                        <h1>Create your account</h1>
-                        
+                        <h1>Sign in to X</h1>
+                        <button className='welcome-button google-signin' style={{width:'100%',fontWeight:'100'}}> Sign up with Google</button>
+                    <button className='welcome-button apple-signup' style={{width:'100%',fontWeight:'100'}}> 
+                        <FontAwesomeIcon icon={faApple} /> Sign up with Apple
+                    </button>
+                    <h5 style={{width:'100%',textAlign:'center'}}>or</h5>
                         <input type="email" placeholder="Email" className="modal-input" onChange={(e) => setEmail(e.target.value)} />
                         <input type="password" placeholder="Password" className="modal-input" onChange={(e) => setPassword(e.target.value)} />
                         
 
 
-                        <button className="modal-button" type='submit'>Next</button>
+                        <button className="modal-button" style={{backgroundColor:'white',color:'black'}} type='submit'>Next</button>
+                        <button className="welcome-button signin-btn" style={{width:'100%',color:'white'}} type='submit'>Forgot Password</button>
                     </form>
                 </div>
             )}
