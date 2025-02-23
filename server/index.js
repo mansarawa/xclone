@@ -6,6 +6,7 @@ import { signin, signup } from './routes/SingUp.js'
 import { createTwitte, deleteTwitte, getAllTwitte, getTwitte, updateTwitte } from './routes/Twitte.js'
 import { addDetail, getDetail } from './routes/PDetail.js'
 import { addActivity, twitteeActivity } from './routes/activity.js'
+import { getAllUser } from './routes/follow.js'
 
 dotenv.config()
 const app=express()
@@ -16,6 +17,8 @@ await connection
 //      Login And SignUp
 app.use('/',signin)
 app.use('/',signup)
+
+app.use('/',getAllUser)
 
 //      Personal Detail
 app.use('/',addDetail);

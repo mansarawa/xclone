@@ -38,11 +38,11 @@
 }
 .premium h1{
     font-size: 25px;
-    color: white;
+    color: #e7e9ea;
 }
 .premium p{
     margin: 2% 0 2% 0;
-    color: whitesmoke;
+    color: #e7e9ea;
 }
 .subscribe {
     margin-top: 3%;
@@ -75,6 +75,7 @@
     border: 1px solid gray;
     display: flex;
     align-items: center;
+    flex-direction: column;
     justify-content: flex-start;
     padding: 3%;
     border-radius: 15px;

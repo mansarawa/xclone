@@ -32,7 +32,7 @@ async function addActivityController(req, res) {
                 return res.status(200).json({ data: encryptedData });
             }
         } else {
-            // Insert new activity record
+            
             const [newActivity] = await db.query(
                 'INSERT INTO ACTIVITY (comment, `like`, bookmark, repost, twiteeid, userid) VALUES (?, ?, ?, ?, ?, ?)',
                 [comment, like, bookmark, repost, twiteeid, userid]
@@ -66,15 +66,19 @@ async function addtTwitterActivityController(req, res) {
     try {
         
         await db.query(`
-            INSERT INTO tactivity (twitteid, \`${type}\`) 
-            VALUES (?, 1) 
+            INSERT INTO tactivity (userid, twitteid, \`${type}\`) 
+            VALUES (?, ?, 1) 
             ON DUPLICATE KEY UPDATE \`${type}\` = \`${type}\` + 1
-        `, [twitteid]);
-
-        res.json({ message: `${type} updated successfully!` });
+        `, [userId, twitteid]);
+        
+        
+        const encryptedData = await encryptData({ message: "updated success", success: true });
+        return res.status(200).json({ data: encryptedData });
+        
     } catch (error) {
-        console.error("Database error:", error);
-        res.status(500).json({ message: "Internal server error" });
+        console.log(error);
+        const encryptedData = await encryptData({ message: error.message, success: false });
+        return res.status(500).json({ data: encryptedData });
     }
 }
 

@@ -32,7 +32,7 @@ function Home() {
     const token = localStorage.getItem('token') || ''
     const data = JSON.parse(localStorage.getItem('data') || '')
     const userId = data.userid
-
+   
     const [text, setText] = useState('')
     const [post, setPost] = useState([])
     const [pFormData, setPFormData] = useState({ name: '', username: '', bio: '', phone: 0, userid: userId })
@@ -67,7 +67,6 @@ function Home() {
     };
     const getAllPost = async () => {
 
-        console.log("called")
         const res = await fetch('http://localhost:5000/get-all-twitte', {
             method: 'get',
             headers: {
@@ -76,9 +75,7 @@ function Home() {
             }
         })
         const getData = await res.json()
-        console.log(getData)
         const decryptedData = await decryptData(getData.data)
-        console.log(decryptedData)
         const result = decryptedData
         if (result.success) {
             setPost(result.twittes)
@@ -89,8 +86,10 @@ function Home() {
             alert(result.message)
         }
     }
+    
     useEffect(() => {
         getAllPost();
+        
         console.log(data)
         if (data.isDetail) {
             setIsModalOpen(false)
@@ -141,6 +140,7 @@ function Home() {
 
             console.log(decryptedData);
             if (decryptedData.success) {
+                getAllPost();
                 console.log(`${type} action recorded`);
             } else {
                 alert(decryptedData.message);
