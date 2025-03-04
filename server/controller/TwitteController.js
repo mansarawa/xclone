@@ -2,12 +2,14 @@ import db from '../config/dbConfig.js'
 import decryptData from '../helper/decryptData.js'
 import encryptData from '../helper/encryptData.js'
 async function createTwitteController(req, res) {
+    console.log(req.body)
     const data = decryptData(req.body.encryptedData)
     console.log(data)
-    const { text, image, userId } = data
+    const { text, userId } = data
     try {
         const [findUser] = await db.query('SELECT * FROM SIGNUP WHERE id=?', [userId])
         if (findUser.length > 0) {
+            const image = req.files["image"] ? req.files["image"][0].path : null;
             const [newTwitte] = await db.query('INSERT INTO TWITTES (text,image,userId) VALUES (?,?,?)', [text, image, userId])
             if (newTwitte.affectedRows > 0) {
                 const encryptedData = await encryptData({ message: "twitte created", success: true })
@@ -28,13 +30,15 @@ async function createTwitteController(req, res) {
 
 
 async function getTwitteController(req, res) {
-    const userId = req.params()
+    const {userid} = req.params
     try {
-        const [findUser] = await db.query('SELECT * FROM SIGNUP WHERE id=?', [userId])
+        const [findUser] = await db.query('SELECT * FROM SIGNUP WHERE id=?', [userid])
         if (findUser.length > 0) {
-            const [getTwitte] = await db.query('SELECT * FROM TWITTES WHERE userid=?', [userId])
-            if (getTwitte.length > 0) {
-                const encryptedData = await encryptData({ message: "twitte fetched", twittes: getTwitte, success: true })
+            
+            const [getTwitte] = await db.query('SELECT * FROM TWITTES T LEFT JOIN TACTIVITY A ON T.id = A.twitteid WHERE T.userid=?', [userid])
+            if (getTwitte) {
+                const [findDetail] = await db.query('SELECT * FROM PDETAIL WHERE userid=?', [userid])
+                const encryptedData = await encryptData({ message: "twitte fetched",detail:findDetail[0], twittes: getTwitte, success: true })
                 return res.status(200).json({ data: encryptedData })
             }
             const encryptedData = await encryptData({ message: "no not found", success: false })
@@ -104,6 +108,7 @@ async function getAllTwitteController(req, res) {
                SELECT 
     P.name, 
     P.username, 
+    P.photo,
     T.text, 
     T.id AS twitteid, 
     A.like, 

@@ -1,18 +1,18 @@
 import mysql from 'mysql2/promise'
 
-// const connection=mysql.createPool({
-//     user:'root',
-//     host:'localhost',
-//     database:'twitter',
-//     password:''
-// })
 const connection=mysql.createPool({
-    user:'mansarawa',
-    host:'mydatabase-xyz.internal',
+    user:'root',
+    host:'localhost',
     database:'twitter',
-    password:'mansa@7773',
-    port:3306
+    password:''
 })
+// const connection=mysql.createPool({
+//     user:'mansarawa',
+//     host:'mydatabase-xyz.internal',
+//     database:'twitter',
+//     password:'mansa@7773',
+//     port:3306
+// })
 
 connection.getConnection((err,connection)=>{
     if(err){

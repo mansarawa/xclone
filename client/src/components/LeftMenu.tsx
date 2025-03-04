@@ -9,6 +9,16 @@ import {
     faMagnifyingGlass, faUser, faUserGroup, faEllipsisH 
 } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import Grok from '../assets/svg/grok.svg'
+import Premium from '../assets/svg/premium.svg'
+import Lverify from '../assets/svg/lverify.svg'
+import More from '../assets/svg/more.svg'
+import Home from '../assets/svg/home.svg'
+import Notification from '../assets/svg/notification.svg'
+import Message from '../assets/svg/message.svg'
+import Communities from '../assets/svg/communitites.svg'
+import Search from '../assets/svg/search.svg'
+import Profile from '../assets/svg/profile.svg'
 
 function LeftMenu() {
     const navigate=useNavigate()
@@ -29,41 +39,43 @@ function LeftMenu() {
 
         {/* Sidebar Items */}
         <div className="item">
-            <FontAwesomeIcon icon={faHouse} className='menu-icon' />
-            <a href='/'>Home</a>
+        <img src={Home} className='lsvg' />
+            <a href='/home'>Home</a>
         </div>
         <div className="item">
-            <FontAwesomeIcon icon={faMagnifyingGlass} className='menu-icon' />
+        <img src={Search} className='lsvg' />
             <a href='/'>Explore</a>
         </div>
         <div className="item">
-            <FontAwesomeIcon icon={faBell} className='menu-icon' />
+        <img src={Notification} className='lsvg' />
             <a href='/'>Notifications</a>
         </div>
         <div className="item">
-            <FontAwesomeIcon icon={faEnvelope} className='menu-icon' />
+        <img src={Message} className='lsvg' />
             <a href='/'>Messages</a>
         </div>
         <div className="item">
-            <FontAwesomeIcon icon={faXing} className='menu-icon' />
+        <img src={Grok} className='lsvg' />
             <a href='/'>Grok</a>
         </div>
         <div className="item">
-            <FontAwesomeIcon icon={faUserGroup} className='menu-icon' />
+        <img src={Communities} className='lsvg' />
             <a href='/'>Communities</a>
         </div>
         <div className="item">
+        <img src={Premium} className='lsvg' />
             <a href='/'>Premium</a>
         </div>
         <div className="item">
+        <img src={Lverify} className='lsvg' />
             <a href='/'>Verified Orgs</a>
         </div>
         <div className="item">
-            <FontAwesomeIcon icon={faUser} className='menu-icon' />
-            <a href='/'>Profile</a>
+        <img src={Profile} className='lsvg' />
+            <a href='/profile'>Profile</a>
         </div>
         <div className="item">
-            <FontAwesomeIcon icon={faEllipsisH} className='menu-icon' />
+        <img src={More} className='lsvg' />
             <a href='/'>More</a>
         </div>
 

@@ -31,7 +31,7 @@
 
 .item a {
     text-decoration: none;
-    color: white;
+    color: #e7e9ea;
     /* font-weight: bold; */
 }
 
@@ -66,4 +66,13 @@
     border-radius: 30px;
     cursor: pointer;
     transition: background 0.3s ease;
+}
+.lsvg{
+    width:30px;
+    height:30px;
+    cursor: pointer;
+    color:white;
+    /* margin-right: 5px; */
+    filter: invert(100%) brightness(100%) contrast(100%);
+
 }

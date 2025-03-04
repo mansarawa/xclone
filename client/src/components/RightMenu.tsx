@@ -7,6 +7,8 @@ import decryptData from '../helper/decryptData'
 function RightMenu() {
     const token = localStorage.getItem('token') || ''
     const [users, setUsers] = useState([]);
+    const BASE_URL='http://localhost:5000'
+
     const getAllUser = async () => {
 
         const res = await fetch('http://localhost:5000/get-all-user', {
@@ -19,9 +21,10 @@ function RightMenu() {
         const getData = await res.json()
         const decryptedData = await decryptData(getData.data)
         const result = decryptedData
+        console.log(result.users)
         if (result.success) {
             setUsers(result.users)
-
+            console.log(users)
             // navigate('/home')
         }
         else {
@@ -52,9 +55,9 @@ function RightMenu() {
                 <h2 style={{width:'100%',margin:'10px 0 10px 0',color:'#e7e9ea'}}>Who to Follow</h2>
                 {users && users.map((item: any, key) => (
 
-                    <div className="single-content">
+                    <div className="single-content" key={key}>
                         <div className='single-photo'>
-                            <img src={demo} alt="" style={{width:'40px',height:'40px'}}/>
+                            <img  src={users.photo ? `${BASE_URL}/${users.photo}` : demo}  alt="" style={{width:'40px',height:'40px'}}/>
                         </div>
                         <div className="name" style={{flexDirection:'column',marginLeft:'10px',alignItems:'flex-start'}}>
                             <h3>{item.name}</h3>
