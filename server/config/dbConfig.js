@@ -7,11 +7,11 @@ import mysql from 'mysql2/promise'
 //     password:''
 // })
 const connection=mysql.createPool({
-    user:'if0_38464687',
-    host:'mydatabase-xyz.internal',
-    database:'if0_38464687_twitter',
-    password:'mansarawa7773',
-    port:3306
+    user:process.env.DB_USER,
+    host:process.env.DB_HOST,
+    database:process.env.DB_NAME,
+    password:process.env.DB_PASSWORD,
+    port:process.env.DB_PORT
 })
 
 connection.getConnection((err,connection)=>{
