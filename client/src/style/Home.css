@@ -6,7 +6,8 @@
     padding: 0%;
     width: 100vw;
     display: flex;
-    /* align-items: center;
+    overflow-y:hidden; 
+     /* align-items: center;
     justify-content: center; */
 }
 .left-menu{
@@ -22,6 +23,9 @@
     padding-left: 2%;
     height: 100%;
 }
+::-webkit-scrollbar {
+    display: none;
+  }
 .main{
 
     display: flex;
@@ -31,6 +35,8 @@
     justify-content: start; 
     flex-direction: column;
     color: white;
+    overflow-y: scroll;
+    scrollbar-width: none;
     border-right: 1px solid gray;
     /* opacity: 40.0%; */
 }

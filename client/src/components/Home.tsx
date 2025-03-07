@@ -24,7 +24,7 @@ import encryptData from '../helper/encryptData'
 import demo from '../assets/demo.jpg'
 
 function Home() {
-     const BASE_URL='http://localhost:5000'
+    const BASE_URL='http://localhost:5000'
     const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
     const navigate = useNavigate()
     const user = localStorage.getItem('user');
@@ -101,8 +101,9 @@ function Home() {
         console.log(decryptedData)
         const result = decryptedData
         if (result.success) {
-            // setPostData({text:''})
+            setPostData({text:'',image:null})
             // navigate('/home')
+            getAllPost();
         }
         else {
             alert(result.message)
@@ -142,11 +143,8 @@ function Home() {
     const handlePDetailSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         
-        // Create FormData
         const formData = new FormData();
         
-        
-        // Append file if it exists
         if (pFormData.photo) {
             formData.append("photo", pFormData.photo);
         }
