@@ -33,49 +33,49 @@ function LeftMenu() {
   return (
     <div className='containers'>
         {/* Twitter Logo */}
-        <div className="item">
-            <FontAwesomeIcon icon={faXTwitter} className='twitter-icon' />
+        <div className="item mob">
+            <FontAwesomeIcon icon={faXTwitter} className='ltwitter-icon' />
         </div>
 
         {/* Sidebar Items */}
         <div className="item">
-        <img src={Home} className='lsvg' />
+        <img src={Home} className='lsvg' onClick={()=>navigate('/home')} />
             <a href='/home'>Home</a>
         </div>
         <div className="item">
-        <img src={Search} className='lsvg' />
+        <img src={Search} className='lsvg' onClick={()=>navigate('/')}/>
             <a href='/'>Explore</a>
         </div>
         <div className="item">
-        <img src={Notification} className='lsvg' />
+        <img src={Notification} className='lsvg' onClick={()=>navigate('/')}/>
             <a href='/'>Notifications</a>
         </div>
         <div className="item">
-        <img src={Message} className='lsvg' />
+        <img src={Message} className='lsvg'onClick={()=>navigate('/')} />
             <a href='/'>Messages</a>
         </div>
         <div className="item">
-        <img src={Grok} className='lsvg' />
+        <img src={Grok} className='lsvg' onClick={()=>navigate('/')}/>
             <a href='/'>Grok</a>
         </div>
         <div className="item">
-        <img src={Communities} className='lsvg' />
+        <img src={Communities} className='lsvg' onClick={()=>navigate('/')}/>
             <a href='/'>Communities</a>
         </div>
-        <div className="item">
-        <img src={Premium} className='lsvg' />
+        <div className="item mob">
+        <img src={Premium} className='lsvg'onClick={()=>navigate('/')} />
             <a href='/'>Premium</a>
         </div>
-        <div className="item">
-        <img src={Lverify} className='lsvg' />
+        <div className="item mob">
+        <img src={Lverify} className='lsvg ' onClick={()=>navigate('/')}/>
             <a href='/'>Verified Orgs</a>
         </div>
-        <div className="item">
-        <img src={Profile} className='lsvg' />
+        <div className="item mob">
+        <img src={Profile} className='lsvg' onClick={()=>navigate('/profile')}/>
             <a href='/profile'>Profile</a>
         </div>
-        <div className="item">
-        <img src={More} className='lsvg' />
+        <div className="item mob">
+        <img src={More} className='lsvg' onClick={()=>navigate('/')}/>
             <a href='/'>More</a>
         </div>
 

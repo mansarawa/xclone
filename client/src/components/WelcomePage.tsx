@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import xlogo from '../assets/xlogo.svg';
 import '../style/Welcome.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,18 +7,93 @@ import encryptData from '../helper/encryptData';
 import decryptData from '../helper/decryptData';
 import { useNavigate } from 'react-router-dom';
 import google from '../assets/google.png'
+import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 const WelcomePage: React.FC = () => {
     const navigate = useNavigate()
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState<boolean>(false);
     const [isEmail, setIsEmail] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [LogModalOpen, setLogModalOpen] = useState<boolean>(false);
+    const [pFormData, setPFormData] = useState({ name: '', username: '', photo: [], bphoto: [], bio: '', phone: 0, userid: undefined })
+    const [token,setToken]=useState(0)
     const [dob, setDob] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [selectedMonth, setSelectedMonth] = useState<string>("January");
     const [selectedDay, setSelectedDay] = useState<number>(1);
     const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
+    const fileInputRef = useRef(null);
+        const backgroundInputRef = useRef(null)
+    
+        const handleFileClick = () => {
+            if (fileInputRef.current) {
+                fileInputRef.current.click();
+            }
+        };
+        const handleBackgroundClick = () => {
+            if (backgroundInputRef.current) {
+                backgroundInputRef.current.click();
+            }
+        };
+        const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                if (e.target.files?.length > 0) {
+                    setPFormData({ ...pFormData, photo: e.target.files[0] });
+                }
+            };
+            const handleBackgroundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                if (e.target.files?.length > 0) {
+                    setPFormData({ ...pFormData, bphoto: e.target.files[0] });
+                }
+            };
+            const handlePDetailSubmit = async (e: React.FormEvent) => {
+                e.preventDefault();
+        
+                const formData = new FormData();
+        
+                if (pFormData.photo) {
+                    formData.append("photo", pFormData.photo);
+                }
+                if (pFormData.bphoto) {
+                    formData.append("bphoto", pFormData.bphoto);
+                }
+        
+                // Encrypt only text fields, not the whole FormData
+                const encryptedData = await encryptData({
+                    name: pFormData.name,
+                    username: pFormData.username,
+                    bio: pFormData.bio,
+                    phone: pFormData.phone,
+                    userid: pFormData.userid
+                });
+        
+                formData.append("encryptedData", encryptedData);
+        
+                try {
+                    const res = await fetch("http://localhost:5000/add-detail", {
+                        method: "POST",
+                        headers: {
+                            "Token": token,
+                        },
+                        body: formData,
+                    });
+        
+                    const getData = await res.json();
+                    console.log(getData);
+        
+                    const decryptedData = await decryptData(getData.data);
+                    console.log(decryptedData);
+        
+                    if (decryptedData.success) {
+                        setIsDetailModalOpen(false);
+                        navigate('/home')
+                    } else {
+                        alert(decryptedData.message);
+                    }
+                } catch (error) {
+                    console.error("Upload Error:", error);
+                }
+            };
 
     const months = [
         { name: "January", days: 31 }, { name: "February", days: 28 }, { name: "March", days: 31 },
@@ -91,13 +166,18 @@ const WelcomePage: React.FC = () => {
             console.log(result)
             localStorage.clear()
             localStorage.setItem('data', JSON.stringify(result))
-
+            setPFormData({...pFormData,userid:result.userid})
+            setToken(result.token)
             localStorage.setItem('token', result.token)
             if (result.user) {
-
                 localStorage.setItem('user', JSON.stringify(result.user))
+                if(result.isDetail){
+                    navigate('/home')
+                }
+
             }
-            navigate('/home')
+            setIsDetailModalOpen(true)
+            setLogModalOpen(false)
         }
         else {
             alert(result.message)
@@ -140,8 +220,8 @@ const WelcomePage: React.FC = () => {
                         </div>
                         <h1>Create your account</h1>
 
-                        <input type="email" placeholder="Email" className="modal-input" style={{color:'#aaaaaa',width:'100%',height:'100px',margin:'0'}} onChange={(e) => setEmail(e.target.value)} />
-                        <input type="password" placeholder="Password" className="modal-input" style={{width:'100%',height:'100px',margin:'20px 0 0 0'}} onChange={(e) => setPassword(e.target.value)} />
+                        <input type="email" placeholder="Email" className="modal-input" style={{color:'#aaaaaa',width:'100%',height:'70px',margin:'0'}} onChange={(e) => setEmail(e.target.value)} />
+                        <input type="password" placeholder="Password" className="modal-input" style={{width:'100%',height:'70px',margin:'20px 0 0 0'}} onChange={(e) => setPassword(e.target.value)} />
 
                         <h3>Date of Birth</h3>
                         <p>This will not be shown publicly.</p>
@@ -178,7 +258,7 @@ const WelcomePage: React.FC = () => {
                     }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
                             <button className="close-button" onClick={() => setLogModalOpen(false)}>✖</button>
-                            <FontAwesomeIcon icon={faXTwitter} style={{ width: '100%', textAlign: 'center', margin: '-80px 0 10px 5%', fontSize: '40px' }} />
+                            <FontAwesomeIcon icon={faXTwitter} style={{ width: '100%', textAlign: 'center', margin: '-50px 0 10px 5%', fontSize: '40px' }} />
                         </div>
                         <h1 style={{ width: '80%', marginLeft: '10%', fontWeight: '100' }}>Sign in to X</h1>
                         <button className='welcome-button google-signin' style={{ width: '80%', marginBottom: '3%', marginLeft: '10%', fontWeight: '100' }}><img src={google} style={{ marginRight: '10px', width: '20px', height: '20px' }} alt="" /> Sign in with Google</button>
@@ -192,7 +272,11 @@ const WelcomePage: React.FC = () => {
 
 
                         <button className="modal-button" style={{ backgroundColor: 'white', width: '80%', marginLeft: '10%', color: 'black' }} type='submit'>Next</button>
-                        <button className="welcome-button signin-btn" style={{ width: '80%', marginLeft: '10%', color: 'white' }} type='submit'>Forgot Password</button>
+                        <button className="welcome-button signin-btn" style={{ width: '80%', marginLeft: '10%',marginTop:'5%', color: 'white' }} type='submit'>Forgot Password</button>
+                        <div className="not-account">
+                            <p>Don't have an account?</p>
+                            <button type='button' onClick={()=>setIsModalOpen(true)}>Sign up</button>
+                        </div>
                     </form>
 
                 </div>
@@ -201,7 +285,7 @@ const WelcomePage: React.FC = () => {
                 <div className="modal-overlay">
                     <form className="modal-content" onSubmit={handleLogSubmit}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-                            <button className="close-button" onClick={() => setLogModalOpen(false)}>✖</button>
+                            <button className="close-button" onClick={() => setIsEmail(false)}>✖</button>
                             <FontAwesomeIcon icon={faXTwitter} style={{ width: '100%', textAlign: 'center', margin: '-80px 0 10px 5%', fontSize: '40px' }} />
                         </div>
                         <h1 style={{ width: '80%', marginLeft: '10%', fontWeight: '100' }}>Enter Your Password</h1>
@@ -210,10 +294,75 @@ const WelcomePage: React.FC = () => {
                         <input type="password" placeholder="Password" className="modal-input" onChange={(e) => setPassword(e.target.value)} />
                         <button className="modal-button" style={{ backgroundColor: 'white', width: '80%', marginLeft: '10%', color: 'black' }} type='submit'>Next</button>
                         <button className="welcome-button signin-btn" style={{ width: '80%', marginLeft: '10%', color: 'white' }} type='submit'>Forgot Password</button>
+                        <div className="not-account">
+                            <p>Don't have an account?</p>
+                            <button type='button' onClick={()=>setIsModalOpen(true)}>Sign up</button>
+                        </div>
                     </form>
                 </div>
             )}
+             {/* MODAL */}
+             {isDetailModalOpen && (
+                    <div className="p-overlay">
+                        <form className="p-content" onSubmit={handlePDetailSubmit}>
 
+                            <h1>Enter Your Personal Detail your account</h1>
+                            <div className="details">
+                                <div className="field">
+                                    <h3>Name</h3>
+                                    <input type="text" placeholder="test" className="p-input" onChange={(e) => setPFormData({ ...pFormData, name: e.target.value })} />
+                                </div>
+                                <div className="field">
+                                    <h3>Username</h3>
+                                    <input type="text" placeholder="test@123" className="p-input" onChange={(e) => setPFormData({ ...pFormData, username: e.target.value })} />
+                                </div>
+                                <div className="field">
+                                    <h3>Bio</h3>
+                                    <input type="text" placeholder="i am student" className="p-input" onChange={(e) => setPFormData({ ...pFormData, bio: e.target.value })} />
+                                </div>
+                                <div className="field">
+                                    <h3>Phone</h3>
+                                    <input type="text" placeholder="7854784589" className="p-input" onChange={(e) => setPFormData({ ...pFormData, phone: parseInt(e.target.value) || 0 })} />
+                                </div>
+                                <div className="field" style={{ textAlign: 'center', display: 'flex', marginTop: '5%' }}>
+                                    <h3>Profile Photo</h3>
+
+                                    <FontAwesomeIcon
+                                        icon={faCloudArrowUp}
+
+                                        style={{ color: "white", marginLeft: '5%', fontSize: "40px", cursor: "pointer" }}
+                                        onClick={handleFileClick}
+                                    />
+                                    <input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        style={{ display: "none" }}
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                    />
+                                </div>
+                                <div className="field" style={{ textAlign: 'center', display: 'flex', marginTop: '5%' }}>
+                                    <h3>BackGround Photo</h3>
+
+                                    <FontAwesomeIcon
+                                        icon={faCloudArrowUp}
+
+                                        style={{ color: "white", marginLeft: '5%', fontSize: "40px", cursor: "pointer" }}
+                                        onClick={handleBackgroundClick}
+                                    />
+                                    <input
+                                        type="file"
+                                        ref={backgroundInputRef}
+                                        style={{ display: "none" }}
+                                        accept="image/*"
+                                        onChange={handleBackgroundChange}
+                                    />
+                                </div>
+                            </div>
+                            <button className="p-button" type='submit'>Next</button>
+                        </form>
+                    </div>
+                )}
             <div className='footer-links'>
                 <button>About</button>
                 <button>Download The X app</button>

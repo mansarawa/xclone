@@ -58,6 +58,20 @@
     cursor: pointer;
     transition: background 0.3s;
 }
+.happen{
+    width: 100%;
+    
+    padding: 5%;
+    
+    border-radius: 20px;
+}
+.happen:hover{
+    cursor: pointer;
+    background-color: rgba(200, 200, 200, 0.1); 
+}
+.happen p{
+    color: gray;
+}
 
 .subscribe:hover {
     background-color: #0d8af0;
@@ -65,10 +79,11 @@
 .trending{
     border: 1px solid gray;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    padding: 3%;
+    padding-top: 3%;
     border-radius: 15px;
 }
 .to-follow{
@@ -81,4 +96,9 @@
     padding: 3%;
     border-radius: 15px;
     width: 100%;
+}
+@media screen and (max-width:800px){
+    .right-container{
+        display: none;
+    }
 }

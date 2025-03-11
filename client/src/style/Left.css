@@ -35,7 +35,7 @@
     /* font-weight: bold; */
 }
 
-.twitter-icon {
+.ltwitter-icon {
     font-size: 35px;
     margin-bottom: 20px; /* Space below Twitter logo */
 }
@@ -74,5 +74,40 @@
     color:white;
     /* margin-right: 5px; */
     filter: invert(100%) brightness(100%) contrast(100%);
+
+}
+@media screen and (max-width:600px){
+    .containers{
+        margin: 0%;
+        width: 100vw;
+        height: 5%;
+        bottom: 0%;
+        left: 0%;
+        position: fixed;
+        flex-direction: row;
+        
+        align-items:end;
+        justify-content: flex-start;
+    }
+    .mob{
+        display:none;
+    }
+    .ltwitter-icon{
+        display:none;
+    }
+    .item{
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+    
+    .item a{
+        display: none;
+    }
+    .lpost-button{
+        display: none;
+    }
+    .logout{
+        display: none;
+    }
 
 }

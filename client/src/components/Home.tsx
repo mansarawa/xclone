@@ -24,66 +24,45 @@ import encryptData from '../helper/encryptData'
 import demo from '../assets/demo.jpg'
 
 function Home() {
-    const BASE_URL='http://localhost:5000'
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+    const BASE_URL = 'http://localhost:5000'
+    
     const navigate = useNavigate()
-    const user = localStorage.getItem('user');
-    const parsedUser =  JSON.parse(user)
+    const user:any = localStorage.getItem('user') || null;
+    const parsedUser = JSON.parse(user)
+    console.log(parsedUser[0].photo)
     const token = localStorage.getItem('token') || ''
     const data = JSON.parse(localStorage.getItem('data') || '')
     const userId = data.userid
-    console.log(parsedUser[0])
+    // console.log(parsedUser[0])
 
-    const [postData, setPostData] = useState({text:'',image:[],userid:userId})
+    const [postData, setPostData] = useState({ text: '', image: [], userid: userId })
     const [post, setPost] = useState([])
-    const [pFormData, setPFormData] = useState({ name: '', username: '', photo: [],bphoto:[], bio: '', phone: 0, userid: userId })
-    const [aFormData, setAFormData] = useState({ like: 0, repost: 0, bookmark: 0, comment: '', userid: userId, twiteeid: 0 })
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-    const fileInputRef = useRef(null);
-    const backgroundInputRef=useRef(null)
-    const twittePhotoInputRef=useRef(null)
-
-    const handleFileClick = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
-        }
-    };
-    const handleBackgroundClick = () => {
-        if (backgroundInputRef.current) {
-            backgroundInputRef.current.click();
-        }
-    };
+    const twittePhotoInputRef = useRef<HTMLInputElement>(null)
+    
     const handleTwittePhotoClick = () => {
         if (twittePhotoInputRef.current) {
             twittePhotoInputRef.current.click();
         }
     };
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files?.length > 0) {
-            setPFormData({ ...pFormData, photo: e.target.files[0] });
-        }
-    };
-    const handleBackgroundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files?.length > 0) {
-            setPFormData({ ...pFormData, bphoto: e.target.files[0] });
-        }
-    };
+    
     const handleTwittePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length > 0) {
             setPostData({ ...postData, image: e.target.files[0] });
         }
     };
+    
     const handlePostSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
-        const formData = new FormData();        
-     
+
+        const formData = new FormData();
+
         if (postData.image) {
             formData.append("image", postData.image);
         }
         const encryptedData = await encryptData({
-            text: postData.text,   
+            text: postData.text,
             userId: postData.userid
         });
         formData.append("encryptedData", encryptedData);
@@ -101,7 +80,7 @@ function Home() {
         console.log(decryptedData)
         const result = decryptedData
         if (result.success) {
-            setPostData({text:'',image:null})
+            setPostData({ text: '', image: null })
             // navigate('/home')
             getAllPost();
         }
@@ -135,59 +114,10 @@ function Home() {
     useEffect(() => {
         getAllPost();
 
-        console.log(data)
-        if (data.isDetail) {
-            setIsModalOpen(false)
-        }
+        
     }, [])
-    const handlePDetailSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        
-        const formData = new FormData();
-        
-        if (pFormData.photo) {
-            formData.append("photo", pFormData.photo);
-        }
-        if (pFormData.bphoto) {
-            formData.append("bphoto", pFormData.bphoto);
-        }
     
-        // Encrypt only text fields, not the whole FormData
-        const encryptedData = await encryptData({
-            name: pFormData.name,
-            username: pFormData.username,
-            bio: pFormData.bio,
-            phone: pFormData.phone,
-            userid: pFormData.userid
-        });
-    
-        formData.append("encryptedData", encryptedData);
-    
-        try {
-            const res = await fetch("http://localhost:5000/add-detail", {
-                method: "POST",
-                headers: {
-                    "Token": token, 
-                },
-                body: formData, 
-            });
-    
-            const getData = await res.json();
-            console.log(getData);
-    
-            const decryptedData = await decryptData(getData.data);
-            console.log(decryptedData);
-    
-            if (decryptedData.success) {
-                setIsModalOpen(false);
-            } else {
-                alert(decryptedData.message);
-            }
-        } catch (error) {
-            console.error("Upload Error:", error);
-        }
-    };
-    
+
     const handleActivity = async (type: string, twitteid: Number) => {
         const updatedFormData = { type, twitteid, userId }
         console.log(updatedFormData)
@@ -230,21 +160,24 @@ function Home() {
                 </div>
                 <div className="post">
                     <div className="photo">
-                        <img src={`${BASE_URL}/${parsedUser[0].photo}`} alt="" />
+                        <img
+                            src={`${BASE_URL}/${parsedUser[0].photo}`}
+                            alt="profile photo"
+                        />
                     </div>
 
                     <form className="content" onSubmit={handlePostSubmit}>
                         <textarea
                             ref={textareaRef}
                             value={postData.text}
-                            onChange={(e) => setPostData({...postData,text: e.target.value})}
+                            onChange={(e) => setPostData({ ...postData, text: e.target.value })}
                             placeholder="What is happening?!"
                             rows={1}
                         ></textarea>
                         <div className="btn">
                             {/* <FontAwesomeIcon icon={faImage} className='svg' /> */}
                             <div>
-                                <img src={Photo} className='svg' onClick={handleTwittePhotoClick}/>
+                                <img src={Photo} className='svg' onClick={handleTwittePhotoClick} />
                                 <img src={Gif} className='svg' />
                                 <img src={Grok} className='svg' />
                                 <img src={Bullet} className='svg' />
@@ -253,12 +186,12 @@ function Home() {
                                 <img src={Location} className='svg' />
                             </div>
                             <input
-                                        type="file"
-                                        ref={twittePhotoInputRef}
-                                        style={{ display: "none" }}
-                                        accept="image/*"
-                                        onChange={handleTwittePhotoChange}
-                                    />
+                                type="file"
+                                ref={twittePhotoInputRef}
+                                style={{ display: "none" }}
+                                accept="image/*"
+                                onChange={handleTwittePhotoChange}
+                            />
                             <button type='submit' style={{ backgroundColor: postData.text !== '' ? 'white' : 'gray' }}>Post</button>
                         </div>
                     </form>
@@ -312,73 +245,7 @@ function Home() {
                         </div>
                     ))}
                 </div>
-                {/* MODAL */}
-                {isModalOpen && (
-                    <div className="p-overlay">
-                        <form className="p-content" onSubmit={handlePDetailSubmit}>
-
-                            <h1>Enter Your Personal Detail your account</h1>
-                            <div className="details">
-                                <div className="field">
-                                    <h3>Name</h3>
-                                    <input type="text" placeholder="test" className="p-input" onChange={(e) => setPFormData({ ...pFormData, name: e.target.value })} />
-                                </div>
-                                <div className="field">
-                                    <h3>Username</h3>
-                                    <input type="text" placeholder="test@123" className="p-input" onChange={(e) => setPFormData({ ...pFormData, username: e.target.value })} />
-                                </div>
-                                <div className="field">
-                                    <h3>Bio</h3>
-                                    <input type="text" placeholder="i am student" className="p-input" onChange={(e) => setPFormData({ ...pFormData, bio: e.target.value })} />
-                                </div>
-                                <div className="field">
-                                    <h3>Phone</h3>
-                                    <input type="text" placeholder="7854784589" className="p-input" onChange={(e) => setPFormData({ ...pFormData, phone: parseInt(e.target.value) || 0 })} />
-                                </div>
-                                <div className="field" style={{textAlign:'center',display:'flex',marginTop:'5%'}}>
-                                    <h3>Profile Photo</h3>
-
-                                    <FontAwesomeIcon
-                                        icon={faCloudArrowUp}
-
-                                        style={{ color: "white",marginLeft:'5%', fontSize: "40px", cursor: "pointer" }}
-                                        onClick={handleFileClick}
-                                    />
-                                    <input
-                                        type="file"
-                                        ref={fileInputRef}
-                                        style={{ display: "none" }}
-                                        accept="image/*"
-                                        onChange={handleFileChange}
-                                    />
-                                </div>
-                                <div className="field" style={{textAlign:'center',display:'flex',marginTop:'5%'}}>
-                                    <h3>BackGround Photo</h3>
-
-                                    <FontAwesomeIcon
-                                        icon={faCloudArrowUp}
-
-                                        style={{ color: "white",marginLeft:'5%', fontSize: "40px", cursor: "pointer" }}
-                                        onClick={handleBackgroundClick}
-                                    />
-                                    <input
-                                        type="file"
-                                        ref={backgroundInputRef}
-                                        style={{ display: "none" }}
-                                        accept="image/*"
-                                        onChange={handleBackgroundChange}
-                                    />
-                                </div>
-                            </div>
-
-
-
-
-
-                            <button className="p-button" type='submit'>Next</button>
-                        </form>
-                    </div>
-                )}
+               
             </div>
             <div className="right-menu">
                 <RightMenu />

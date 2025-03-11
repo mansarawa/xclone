@@ -154,10 +154,10 @@ function Profile() {
     }, [])
     return (
         <div className='container'>
-            <div className="left-menu">
+            <div className="pleft-menu">
                 <LeftMenu />
             </div>
-            <div className="main">
+            <div className="pmain">
                 <div className="top" style={{ justifyContent: 'space-between' }}>
                     <FontAwesomeIcon icon={faArrowLeft} />
                     <h2> {detail.name}</h2>
@@ -242,84 +242,38 @@ function Profile() {
                     <div className="e-overlay">
                         <form className="e-content" onSubmit={handlePDetailSubmit}>
                            
-                            <div >
-                                <button className="close-button" onClick={() => setIsModalOpen(false)}>✖</button>
+                            <div className='edit-heading'>
+                                <button className="eclose-button" onClick={() => setIsModalOpen(false)}>✖</button>
                                 <h1>Edit Profile</h1>
                                 <button className="e-button" type='submit'>Save</button>
                             </div>
+                            <div className="image">
+
+                    <img src={`${BASE_URL}/${detail.bphoto}`} alt="" className="background" />
+                    <div className="profile">
+                        <img src={`${BASE_URL}/${detail.photo}`} alt="" />
+                        
+                    </div>
+                </div>
                             <div className="e-details">
                                 <div className="e-field">
-                                    <h3>Name</h3>
-                                    <input type="text" placeholder="test" className="p-input" onChange={(e) => setPFormData({ ...pFormData, name: e.target.value })} />
+                                    <p>Name</p>
+                                    <input type="text" value={detail.name}  className="e-input" onChange={(e) => setPFormData({ ...pFormData, name: e.target.value })} />
                                 </div>
                                 <div className="e-field">
-                                    <h3>Username</h3>
-                                    <input type="text" placeholder="test@123" className="p-input" onChange={(e) => setPFormData({ ...pFormData, username: e.target.value })} />
+                                    <p>Username</p>
+                                    <input type="text" value="test@123" className="e-input" onChange={(e) => setPFormData({ ...pFormData, username: e.target.value })} />
                                 </div>
                                 <div className="e-field">
-                                    <h3>Bio</h3>
-                                    <input type="text" placeholder="i am student" className="p-input" onChange={(e) => setPFormData({ ...pFormData, bio: e.target.value })} />
+                                    <p>Bio</p>
+                                    <input type="text" value={detail.bio} className="e-input" onChange={(e) => setPFormData({ ...pFormData, bio: e.target.value })} />
                                 </div>
                                 <div className="e-field">
-                                    <h3>Phone</h3>
-                                    <input type="text" placeholder="7854784589" className="p-input" onChange={(e) => setPFormData({ ...pFormData, phone: parseInt(e.target.value) || 0 })} />
+                                    <p>Phone</p>
+                                    <input type="text" value={detail.phone} className="e-input" onChange={(e) => setPFormData({ ...pFormData, phone: parseInt(e.target.value) || 0 })} />
                                 </div>
-                                <div className="e-field" style={{ textAlign: 'center', display: 'flex', marginTop: '5%' }}>
-                                    <h3>Profile Photo</h3>
-
-                                    <FontAwesomeIcon
-                                        icon={faCloudArrowUp}
-
-                                        style={{ color: "white", marginLeft: '5%', fontSize: "40px", cursor: "pointer" }}
-                                        onClick={handleFileClick}
-                                    />
-                                    <input
-                                        type="file"
-                                        ref={fileInputRef}
-                                        style={{ display: "none" }}
-                                        accept="image/*"
-                                        onChange={handleFileChange}
-                                    />
-                                </div>
-                                <div className="e-field" style={{ textAlign: 'center', display: 'flex', marginTop: '5%' }}>
-                                    <h3>BackGround Photo</h3>
-
-                                    <FontAwesomeIcon
-                                        icon={faCloudArrowUp}
-
-                                        style={{ color: "white", marginLeft: '5%', fontSize: "40px", cursor: "pointer" }}
-                                        onClick={handleBackgroundClick}
-                                    />
-                                    <input
-                                        type="file"
-                                        ref={backgroundInputRef}
-                                        style={{ display: "none" }}
-                                        accept="image/*"
-                                        onChange={handleBackgroundChange}
-                                    />
-                                </div>
-                                <div className="e-field">
-                                    <h3>Date of Birth</h3>
-                                    <p>This will not be shown publicly.</p>
-
-                                    <div className="e-dob-section">
-                                        <select className="modal-input" style={{ marginLeft: '0' }} onChange={handleMonthChange} value={selectedMonth}>
-                                            {months.map((month, index) => (
-                                                <option key={index} value={month.name}>{month.name}</option>
-                                            ))}
-                                        </select>
-                                        <select className="modal-input" style={{ marginLeft: '0' }} onChange={(e) => setSelectedDay(Number(e.target.value))} value={selectedDay}>
-                                            {days.map((day) => (
-                                                <option key={day} value={day}>{day}</option>
-                                            ))}
-                                        </select>
-                                        <select className="modal-input" style={{ marginLeft: '0' }} onChange={(e) => setSelectedYear(Number(e.target.value))} value={selectedYear}>
-                                            {years.map((year) => (
-                                                <option key={year} value={year}>{year}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                </div>
+                                
+                               
                                 
                                 </div>
                         </form>

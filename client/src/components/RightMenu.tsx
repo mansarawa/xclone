@@ -47,9 +47,21 @@ function RightMenu() {
             </div>
             <div className="trending">
 
-                <div className="items">
-                    <h2 style={{color:'#e7e9ea'}}>What’s happening</h2>
-                </div>
+                
+                    <h2 style={{color:'#e7e9ea',width:'100%',paddingLeft:'3%'}}>What’s happening</h2>
+                    <div className='happen'>
+                        <p>Trending in India</p>
+                        <h3>#ShoaibAkhtar</h3>
+                    </div>
+                    <div className='happen'>
+                        <p>Trending in India</p>
+                        <h3>#RJMahvash</h3>
+                    </div>
+                    <div className='happen'>
+                        <p>Trending in India</p>
+                        <h3>#IndianCricket</h3>
+                    </div>
+                
             </div>
             <div className="to-follow">
                 <h2 style={{width:'100%',margin:'10px 0 10px 0',color:'#e7e9ea'}}>Who to Follow</h2>
