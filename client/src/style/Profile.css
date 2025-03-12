@@ -209,7 +209,7 @@
     color: white;
     padding:0%;
     border-radius: 20px;
-    max-width: 600px;
+    min-width: 600px;
     height: 85vh;
     margin: 7vh 0 8vh 0;
     text-align: start;
@@ -223,7 +223,7 @@
 .edit-heading{
     width: 100%;
     /* margin-top: 18%; */
-    padding: 1%;
+    padding: 3% 2%;
    
     display: flex;
     justify-content: space-between;
@@ -251,6 +251,14 @@
 }
 .e-input{
     width: 100%;
+    padding: 10px;
+    margin: 10px 0 5% 0%;
+    height: 60px;
+    background: black;
+    border: 1px solid gray;
+    /* opacity: 40.0%; */
+    color: white;
+    border-radius: 5px;
 }
 .e-button{
     background-color: rgb(239, 243, 244);

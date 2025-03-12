@@ -50,7 +50,7 @@ async function signUpController(req,res) {
         const hashpassword=await bcrypt.hash(password,10)
         const [newUser]=await db.query('INSERT INTO SIGNUP (email,password,dob) VALUES (?,?,?)',[email,hashpassword,dob])
         if(newUser.affectedRows>0){
-            const encryptedData=await encryptData({message:"user created",success:true})
+            const encryptedData=await encryptData({message:"user created",userid:newUser.insertId,success:true})
             return res.status(200).json({data:encryptedData})
         }
         const encryptedData=await encryptData({message:"internal server error",success:false})

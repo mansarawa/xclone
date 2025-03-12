@@ -4,7 +4,7 @@ import { addDetailController, getDetailController } from '../controller/DetailCo
 import { upload } from '../middleware/upload.js'
 
 const addDetail=express.Router()
-addDetail.post('/add-detail',verify,upload,addDetailController)
+addDetail.post('/add-detail',upload,addDetailController)
 
 const getDetail=express.Router()
 getDetail.post('/get-detail/:id',verify,getDetailController)

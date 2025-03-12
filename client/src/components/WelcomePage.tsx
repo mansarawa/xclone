@@ -86,7 +86,9 @@ const WelcomePage: React.FC = () => {
         
                     if (decryptedData.success) {
                         setIsDetailModalOpen(false);
-                        navigate('/home')
+                        setIsModalOpen(false)
+                        setLogModalOpen(true)
+                       
                     } else {
                         alert(decryptedData.message);
                     }
@@ -138,8 +140,8 @@ const WelcomePage: React.FC = () => {
         console.log(decryptedData)
         const result = decryptedData
         if (result.success) {
-
-            setLogModalOpen(true)
+            setPFormData({...pFormData,userid:result.userid})
+            setIsDetailModalOpen(true)
         }
         else {
             alert(result.message)
