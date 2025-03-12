@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import LeftMenu from './LeftMenu'
 import RightMenu from './RightMenu'
-import { faXTwitter, faApple, faGoogle } from '@fortawesome/free-brands-svg-icons';
+
 import '../style/Profile.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
-import Profilee from '../assets/profilee.jpg'
-import bg from '../assets/bg.jfif'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+
 import pmore from '../assets/svg/pmore.svg'
 import decryptData from '../helper/decryptData'
 import Anlytics from '../assets/svg/anlytics.svg';
@@ -15,66 +14,113 @@ import Share from '../assets/svg/share.svg';
 import Repost from '../assets/svg/repost.svg';
 import Heart from '../assets/svg/heart.svg';
 import Comment from '../assets/svg/comment.svg'
-import demo from '../assets/demo.jpg'
-function Profile() {
-    const [post, setPost] = useState([])
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-    const user = localStorage.getItem('user');
-    const parsedUser = user && user !== 'undefined' ? JSON.parse(user) : '';
-    const data = JSON.parse(localStorage.getItem('data') || '')
-    const userId = data.userid
-    const [detail, setDetail] = useState<Object>([])
-    const token = localStorage.getItem('token') || ''
-    const [pFormData, setPFormData] = useState({ name: '', username: '', photo: [], bphoto: [], bio: '', phone: 0, userid: userId })
-    const BASE_URL = 'http://localhost:5000'
-    const [selectedMonth, setSelectedMonth] = useState<string>("January");
-    const [selectedDay, setSelectedDay] = useState<number>(1);
-    const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
+import encryptData from '../helper/encryptData'
+// import demo from '../assets/demo.jpg'
 
-    const months = [
-        { name: "January", days: 31 }, { name: "February", days: 28 }, { name: "March", days: 31 },
-        { name: "April", days: 30 }, { name: "May", days: 31 }, { name: "June", days: 30 },
-        { name: "July", days: 31 }, { name: "August", days: 31 }, { name: "September", days: 30 },
-        { name: "October", days: 31 }, { name: "November", days: 30 }, { name: "December", days: 31 }
+interface FormData {
+    name: string;
+    username: string;
+    photo?: File;
+    bphoto?: File;
+    bio: string;
+    phone: number;
+    userid?: string;
+}
+
+/*interface Month {
+    name: string;
+    days: number;
+}*/
+
+const Profile: React.FC = () => {
+    const [post, setPost] = useState<any[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    //const user = localStorage.getItem("user");
+   // const parsedUser = user && user !== "undefined" ? JSON.parse(user) : null;
+    const data = JSON.parse(localStorage.getItem("data") || "{}");
+    const userId = data?.userid || "";
+    const [detail, setDetail] = useState<Record<string, any>>({});
+    const token = localStorage.getItem("token") || "";
+
+    const [pFormData, setPFormData] = useState<FormData>({
+        name: "",
+        username: "",
+        photo: undefined,
+        bphoto: undefined,
+        bio: "",
+        phone: 0,
+        userid: userId,
+    });
+
+    const BASE_URL = "http://localhost:5000";
+    /* const [selectedMonth, setSelectedMonth] = useState<string>("January");
+    // const [selectedDay, setSelectedDay] = useState<number>(1);
+    const [selectedYear, setSelectedYear] = useState<number>(
+        new Date().getFullYear()
+    );
+
+    const months: Month[] = [
+        { name: "January", days: 31 },
+        { name: "February", days: 28 },
+        { name: "March", days: 31 },
+        { name: "April", days: 30 },
+        { name: "May", days: 31 },
+        { name: "June", days: 30 },
+        { name: "July", days: 31 },
+        { name: "August", days: 31 },
+        { name: "September", days: 30 },
+        { name: "October", days: 31 },
+        { name: "November", days: 30 },
+        { name: "December", days: 31 },
     ];
-
-    const [days, setDays] = useState<number[]>(Array.from({ length: 31 }, (_, i) => i + 1));
-    const years: number[] = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
+*/
+    // const [days, setDays] = useState<number[]>(
+    //     Array.from({ length: 31 }, (_, i) => i + 1)
+    // );
+    // const years: number[] = Array.from(
+    //     { length: 100 },
+    //     (_, i) => new Date().getFullYear() - i
+    // );
 
     // Update days when month changes (handle leap year for February)
-    const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const selected = event.target.value;
-        setSelectedMonth(selected);
-        const monthData = months.find(m => m.name === selected);
-        if (monthData) {
-            const isLeapYear = selected === "February" && selectedYear % 4 === 0 ? 29 : monthData.days;
-            setDays(Array.from({ length: isLeapYear }, (_, i) => i + 1));
-        }
-    };
-    const fileInputRef = useRef(null);
-    const backgroundInputRef = useRef(null)
-    const twittePhotoInputRef = useRef(null)
+    // const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    //     const selected = event.target.value;
+    //     setSelectedMonth(selected);
+    //     const monthData = months.find((m) => m.name === selected);
+    //     if (monthData) {
+    //         const isLeapYear =
+    //             selected === "February" && selectedYear % 4 === 0 ? 29 : monthData.days;
+    //         setDays(Array.from({ length: isLeapYear }, (_, i) => i + 1));
+    //     }
+    // };
 
-    const handleFileClick = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
-        }
-    };
-    const handleBackgroundClick = () => {
-        if (backgroundInputRef.current) {
-            backgroundInputRef.current.click();
-        }
-    };
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files?.length > 0) {
-            setPFormData({ ...pFormData, photo: e.target.files[0] });
-        }
-    };
-    const handleBackgroundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files?.length > 0) {
-            setPFormData({ ...pFormData, bphoto: e.target.files[0] });
-        }
-    };
+    // File input references
+    // const fileInputRef = useRef<HTMLInputElement | null>(null);
+    //const backgroundInputRef = useRef<HTMLInputElement | null>(null);
+    // const twittePhotoInputRef = useRef<HTMLInputElement | null>(null);
+
+    // const handleFileClick = () => {
+    //     fileInputRef.current?.click();
+    // };
+
+    // const handleBackgroundClick = () => {
+    //     backgroundInputRef.current?.click();
+    // };
+
+    // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const file = e.target.files?.[0];
+    //     if (file) {
+    //         setPFormData((prevData) => ({ ...prevData, photo: file }));
+    //     }
+    // };
+
+    // const handleBackgroundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const file = e.target.files?.[0];
+    //     if (file) {
+    //         setPFormData((prevData) => ({ ...prevData, bphoto: file }));
+    //     }
+    // };
+
     const handlePDetailSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -87,31 +133,31 @@ function Profile() {
             formData.append("bphoto", pFormData.bphoto);
         }
 
-        // Encrypt only text fields, not the whole FormData
-        const encryptedData = await encryptData({
-            name: pFormData.name,
-            username: pFormData.username,
-            bio: pFormData.bio,
-            phone: pFormData.phone,
-            userid: pFormData.userid
-        });
-
-        formData.append("encryptedData", encryptedData);
-
         try {
-            const res = await fetch("http://localhost:5000/add-detail", {
+            // Encrypt text fields separately
+            const encryptedData = await encryptData({
+                name: pFormData.name,
+                username: pFormData.username,
+                bio: pFormData.bio,
+                phone: pFormData.phone,
+                userid: pFormData.userid,
+            });
+
+            formData.append("encryptedData", encryptedData);
+
+            const res = await fetch(`${BASE_URL}/add-detail`, {
                 method: "POST",
                 headers: {
-                    "Token": token,
+                    Token: token,
                 },
                 body: formData,
             });
 
             const getData = await res.json();
-            console.log(getData);
+            console.log("Server Response:", getData);
 
             const decryptedData = await decryptData(getData.data);
-            console.log(decryptedData);
+            console.log("Decrypted Data:", decryptedData);
 
             if (decryptedData.success) {
                 setIsModalOpen(false);

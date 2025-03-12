@@ -1,13 +1,10 @@
-import React from 'react'
+
 import '../style/Left.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
-    faXTwitter, faApple, faGoogle, faXing 
+    faXTwitter
 } from '@fortawesome/free-brands-svg-icons';
-import { 
-    faBell, faCommentDots, faEnvelope, faHouse, 
-    faMagnifyingGlass, faUser, faUserGroup, faEllipsisH 
-} from '@fortawesome/free-solid-svg-icons';
+
 import { useNavigate } from 'react-router-dom';
 import Grok from '../assets/svg/grok.svg'
 import Premium from '../assets/svg/premium.svg'
@@ -22,8 +19,8 @@ import Profile from '../assets/svg/profile.svg'
 
 function LeftMenu() {
     const navigate=useNavigate()
-    const user = localStorage.getItem('user');
-    const parsedUser = user && user !== 'undefined' ? JSON.parse(user) : '';
+    //const user = localStorage.getItem('user');
+    // const parsedUser = user && user !== 'undefined' ? JSON.parse(user) : '';
 
     //console.log(user[0].username)
     const handleLogout=()=>{

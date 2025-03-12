@@ -1,51 +1,74 @@
 import React, { useEffect, useRef, useState } from 'react';
-import xlogo from '../assets/xlogo.svg';
+
 import '../style/Welcome.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXTwitter, faApple, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { faXTwitter, faApple } from '@fortawesome/free-brands-svg-icons';
 import encryptData from '../helper/encryptData';
 import decryptData from '../helper/decryptData';
 import { useNavigate } from 'react-router-dom';
 import google from '../assets/google.png'
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 
+
+interface FormData {
+    name: string;
+    username: string;
+    photo?: File;
+    bphoto?: File;
+    bio: string;
+    phone: number;
+    userid?: string;
+}
+
 const WelcomePage: React.FC = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [isDetailModalOpen, setIsDetailModalOpen] = useState<boolean>(false);
-    const [isEmail, setIsEmail] = useState(false)
+    const [isEmail, setIsEmail] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [LogModalOpen, setLogModalOpen] = useState<boolean>(false);
-    const [pFormData, setPFormData] = useState({ name: '', username: '', photo: [], bphoto: [], bio: '', phone: 0, userid: undefined })
-    const [token,setToken]=useState(0)
-    const [dob, setDob] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
-    const [selectedMonth, setSelectedMonth] = useState<string>("January");
+    const [pFormData, setPFormData] = useState<FormData>({
+        name: '',
+        username: '',
+        photo: undefined,
+        bphoto: undefined,
+        bio: '',
+        phone: 0,
+        userid: undefined,
+    });
+    const [token, setToken] = useState<string>('');
+    const [dob, setDob] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [selectedMonth, setSelectedMonth] = useState<string>('January');
     const [selectedDay, setSelectedDay] = useState<number>(1);
     const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
-    const fileInputRef = useRef(null);
-        const backgroundInputRef = useRef(null)
-    
-        const handleFileClick = () => {
-            if (fileInputRef.current) {
-                fileInputRef.current.click();
-            }
-        };
-        const handleBackgroundClick = () => {
-            if (backgroundInputRef.current) {
-                backgroundInputRef.current.click();
-            }
-        };
-        const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-                if (e.target.files?.length > 0) {
-                    setPFormData({ ...pFormData, photo: e.target.files[0] });
-                }
-            };
-            const handleBackgroundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-                if (e.target.files?.length > 0) {
-                    setPFormData({ ...pFormData, bphoto: e.target.files[0] });
-                }
-            };
+
+    // Correctly typed useRef for input elements
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const backgroundInputRef = useRef<HTMLInputElement | null>(null);
+
+    const handleFileClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleBackgroundClick = () => {
+        backgroundInputRef.current?.click();
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setPFormData((prevData) => ({ ...prevData, photo: file }));
+        }
+    };
+
+    const handleBackgroundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setPFormData((prevData) => ({ ...prevData, bphoto: file }));
+        }
+    };
+
             const handlePDetailSubmit = async (e: React.FormEvent) => {
                 e.preventDefault();
         

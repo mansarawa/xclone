@@ -1,4 +1,4 @@
-import React, { use, useEffect, useRef, useState } from 'react'
+import React, {  useEffect, useRef, useState } from 'react'
 import LeftMenu from './LeftMenu'
 import RightMenu from './RightMenu'
 import Photo from '../assets/svg/photo.svg'
@@ -15,13 +15,13 @@ import Share from '../assets/svg/share.svg';
 import Repost from '../assets/svg/repost.svg';
 import Heart from '../assets/svg/heart.svg';
 import Comment from '../assets/svg/comment.svg'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import '../style/Home.css'
-import { faCloudArrowUp, faImage, faUser } from '@fortawesome/free-solid-svg-icons'
-import { useNavigate } from 'react-router-dom'
+
+// import { useNavigate } from 'react-router-dom'
 import decryptData from '../helper/decryptData'
 import encryptData from '../helper/encryptData'
-import demo from '../assets/demo.jpg'
+
 import Loading from './Loading';
 
 
@@ -34,7 +34,7 @@ interface Post {
   
   const Home: React.FC = () => {
     const BASE_URL = "http://localhost:5000";
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     
     const [loading, setLoading] = useState<boolean>(true);
     const [postData, setPostData] = useState<{ text: string; image: File | null; userid: string }>({
