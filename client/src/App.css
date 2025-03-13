@@ -4,3 +4,11 @@
     padding: 0;
     box-sizing: border-box;
 }
+body, html {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  
