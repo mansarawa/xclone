@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import LeftMenu from './LeftMenu'
 import RightMenu from './RightMenu'
 
@@ -95,33 +95,32 @@ const Profile: React.FC = () => {
     // };
 
     // File input references
-    // const fileInputRef = useRef<HTMLInputElement | null>(null);
-    //const backgroundInputRef = useRef<HTMLInputElement | null>(null);
-    // const twittePhotoInputRef = useRef<HTMLInputElement | null>(null);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const backgroundInputRef = useRef<HTMLInputElement | null>(null);
+    
+    const handleFileClick = () => {
+        fileInputRef.current?.click();
+    };
 
-    // const handleFileClick = () => {
-    //     fileInputRef.current?.click();
-    // };
+    const handleBackgroundClick = () => {
+        backgroundInputRef.current?.click();
+    };
 
-    // const handleBackgroundClick = () => {
-    //     backgroundInputRef.current?.click();
-    // };
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setPFormData((prevData) => ({ ...prevData, photo: file }));
+        }
+    };
 
-    // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const file = e.target.files?.[0];
-    //     if (file) {
-    //         setPFormData((prevData) => ({ ...prevData, photo: file }));
-    //     }
-    // };
+    const handleBackgroundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setPFormData((prevData) => ({ ...prevData, bphoto: file }));
+        }
+    };
 
-    // const handleBackgroundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const file = e.target.files?.[0];
-    //     if (file) {
-    //         setPFormData((prevData) => ({ ...prevData, bphoto: file }));
-    //     }
-    // };
-
-    const handlePDetailSubmit = async (e: React.FormEvent) => {
+    const handleEDetailSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         const formData = new FormData();
@@ -145,8 +144,8 @@ const Profile: React.FC = () => {
 
             formData.append("encryptedData", encryptedData);
 
-            const res = await fetch(`${BASE_URL}/add-detail`, {
-                method: "POST",
+            const res = await fetch(`${BASE_URL}/edit-detail`, {
+                method: "put",
                 headers: {
                     Token: token,
                 },
@@ -161,6 +160,7 @@ const Profile: React.FC = () => {
 
             if (decryptedData.success) {
                 setIsModalOpen(false);
+                getAllPost()
             } else {
                 alert(decryptedData.message);
             }
@@ -187,6 +187,7 @@ const Profile: React.FC = () => {
         if (result.success) {
             console.log(result)
             setDetail(result.detail)
+            setPFormData({...pFormData,name:result.detail.name,username:result.detail.username,phone:result.detail.phone,bio:result.detail.bio})
             setPost(result.twittes)
             console.log(post)
             // navigate('/home')
@@ -286,7 +287,7 @@ const Profile: React.FC = () => {
                 </div>
                 {isModalOpen && (
                     <div className="e-overlay">
-                        <form className="e-content" onSubmit={handlePDetailSubmit}>
+                        <form className="e-content" onSubmit={handleEDetailSubmit}>
                            
                             <div className='edit-heading'>
                                 <button className="eclose-button" onClick={() => setIsModalOpen(false)}>✖</button>
@@ -295,28 +296,41 @@ const Profile: React.FC = () => {
                             </div>
                             <div className="image">
 
-                    <img src={`${BASE_URL}/${detail.bphoto}`} alt="" className="background" />
+                    <img src={`${BASE_URL}/${detail.bphoto}`}  onClick={handleBackgroundClick} alt="" className="background" />
+                    <input
+                                        type="file"
+                                        ref={backgroundInputRef}
+                                        style={{ display: "none" }}
+                                        accept="image/*"
+                                        onChange={handleBackgroundChange}
+                                    />
                     <div className="profile">
-                        <img src={`${BASE_URL}/${detail.photo}`} alt="" />
-                        
+                        <img src={`${BASE_URL}/${detail.photo}`} onClick={handleFileClick} alt="" />
+                        <input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        style={{ display: "none" }}
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                    />
                     </div>
                 </div>
                             <div className="e-details">
                                 <div className="e-field">
                                     <p>Name</p>
-                                    <input type="text" value={detail.name}  className="e-input" onChange={(e) => setPFormData({ ...pFormData, name: e.target.value })} />
+                                    <input type="text" value={pFormData.name}  className="e-input" onChange={(e) => setPFormData({ ...pFormData, name: e.target.value })} />
                                 </div>
                                 <div className="e-field">
                                     <p>Username</p>
-                                    <input type="text" value="test@123" className="e-input" onChange={(e) => setPFormData({ ...pFormData, username: e.target.value })} />
+                                    <input type="text" value={pFormData.username} className="e-input" onChange={(e) => setPFormData({ ...pFormData, username: e.target.value })} />
                                 </div>
                                 <div className="e-field">
                                     <p>Bio</p>
-                                    <input type="text" value={detail.bio} className="e-input" onChange={(e) => setPFormData({ ...pFormData, bio: e.target.value })} />
+                                    <input type="text" value={pFormData.bio} className="e-input" onChange={(e) => setPFormData({ ...pFormData, bio: e.target.value })} />
                                 </div>
                                 <div className="e-field">
                                     <p>Phone</p>
-                                    <input type="text" value={detail.phone} className="e-input" onChange={(e) => setPFormData({ ...pFormData, phone: parseInt(e.target.value) || 0 })} />
+                                    <input type="text" value={pFormData.phone} className="e-input" onChange={(e) => setPFormData({ ...pFormData, phone: parseInt(e.target.value) || 0 })} />
                                 </div>
                                 
                                

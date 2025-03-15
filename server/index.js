@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import connection from './config/dbConfig.js'
 import { signin, signup } from './routes/SingUp.js'
 import { createTwitte, deleteTwitte, getAllTwitte, getTwitte, updateTwitte } from './routes/Twitte.js'
-import { addDetail, getDetail } from './routes/PDetail.js'
+import { addDetail, editDetail, getDetail } from './routes/PDetail.js'
 import { addActivity, twitteeActivity } from './routes/activity.js'
 import { getAllUser } from './routes/follow.js'
 import fs from 'fs';
@@ -29,6 +29,7 @@ app.use('/',getAllUser)
 
 //      Personal Detail
 app.use('/',addDetail);
+app.use('/',editDetail)
 app.use('/',getDetail);
 
 //      Twitte Activity
