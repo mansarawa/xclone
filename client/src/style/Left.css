@@ -16,7 +16,7 @@
     color: white;
     display: flex;
     align-items: center;
-    gap: 15px; 
+    gap: 12px; 
     width: 100%;
     padding: 10px 0;
     cursor: pointer;
@@ -31,13 +31,15 @@
 
 .item a {
     text-decoration: none;
+    font-size: 23px;
     color: #e7e9ea;
+    font-weight: 500;
     /* font-weight: bold; */
 }
 
 .ltwitter-icon {
-    font-size: 35px;
-    margin-bottom: 20px; /* Space below Twitter logo */
+    font-size: 32px;
+    /* margin-bottom: 10px;  */
 }
 .lpost-button {
     width: 80%;
@@ -60,11 +62,12 @@
     background-color: black;
     color: white;
     font-size: 20px;
-    padding: 10px;
+    /* padding: 10px; */
     font-weight: bold;
     border: none;
     border-radius: 30px;
     cursor: pointer;
+    margin-bottom: 20px;
     transition: background 0.3s ease;
 }
 .lsvg{

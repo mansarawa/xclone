@@ -239,9 +239,9 @@ const WelcomePage: React.FC = () => {
                 <div className="modal-overlay">
                     <form className="modal-content" onSubmit={handleSubmit}>
                         
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+                        <div className='modal-top'>
                         <button className="close-button" onClick={() => setIsModalOpen(false)}>✖</button>
-                            <FontAwesomeIcon icon={faXTwitter} style={{ width: '100%', textAlign: 'center', margin: '-20px 0 10px 5%', fontSize: '40px' }} />
+                            <FontAwesomeIcon icon={faXTwitter} style={{ textAlign: 'center', margin: '0px 0 10px 5%', fontSize: '40px' }} />
                         </div>
                         <h1>Create your account</h1>
 
@@ -249,7 +249,7 @@ const WelcomePage: React.FC = () => {
                         <input type="password" placeholder="Password" className="modal-input" style={{width:'100%',height:'70px',margin:'20px 0 0 0'}} onChange={(e) => setPassword(e.target.value)} />
 
                         <h3>Date of Birth</h3>
-                        <p>This will not be shown publicly.</p>
+                        <p>This will not be shown publicly. Confirm your own age, even if this account is for a business, a pet, or something else.</p>
 
                         <div className="dob-section">
                             <select className="modal-input" style={{marginLeft:'0'}} onChange={handleMonthChange} value={selectedMonth}>
@@ -276,14 +276,14 @@ const WelcomePage: React.FC = () => {
 
             {/* Sign in Modal */}
             {LogModalOpen && (
-                <div className="modal-overlay">
-                    <form className="modal-content" onSubmit={(e) => {
+                <div className="email-overlay">
+                    <form className="email-content" onSubmit={(e) => {
                         e.preventDefault();
                         setIsEmail(true);
                     }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+                        <div className='email-top'>
                             <button className="close-button" onClick={() => setLogModalOpen(false)}>✖</button>
-                            <FontAwesomeIcon icon={faXTwitter} style={{ width: '100%', textAlign: 'center', margin: '-50px 0 10px 5%', fontSize: '40px' }} />
+                            <FontAwesomeIcon icon={faXTwitter} style={{textAlign: 'center', margin: '0px 0 10px 5%', fontSize: '40px' }} />
                         </div>
                         <h1 style={{ width: '80%', marginLeft: '10%', fontWeight: '100' }}>Sign in to X</h1>
                         <button className='welcome-button google-signin' style={{ width: '80%', marginBottom: '3%', marginLeft: '10%', fontWeight: '100' }}><img src={google} style={{ marginRight: '10px', width: '20px', height: '20px' }} alt="" /> Sign in with Google</button>
@@ -291,12 +291,12 @@ const WelcomePage: React.FC = () => {
                             <FontAwesomeIcon icon={faApple} style={{ marginRight: '10px' }} /> Sign in with Apple
                         </button>
                         <h4 style={{ width: '100%', textAlign: 'center' }}>or</h4>
-                        <input type="email" placeholder="Phone,Email or Username" className="modal-input" onChange={(e) => setEmail(e.target.value)} />
+                        <input type="email" placeholder="Phone,Email or Username" className="email-input" onChange={(e) => setEmail(e.target.value)} />
                         {/* <input type="password" placeholder="Password" className="modal-input" onChange={(e) => setPassword(e.target.value)} />
                          */}
 
 
-                        <button className="modal-button" style={{ backgroundColor: 'white', width: '80%', marginLeft: '10%', color: 'black' }} type='submit'>Next</button>
+                        <button className="email-button" style={{ backgroundColor: 'white', width: '80%', marginLeft: '10%', color: 'black' }} type='submit'>Next</button>
                         <button className="welcome-button signin-btn" style={{ width: '80%', marginLeft: '10%',marginTop:'5%', color: 'white' }} type='submit'>Forgot Password</button>
                         <div className="not-account">
                             <p>Don't have an account?</p>
@@ -307,21 +307,23 @@ const WelcomePage: React.FC = () => {
                 </div>
             )}
             {isEmail && (
-                <div className="modal-overlay">
-                    <form className="modal-content" onSubmit={handleLogSubmit}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+                <div className="password-overlay">
+                    <form className="password-content" onSubmit={handleLogSubmit}>
+                        <div className="password-top">
                             <button className="close-button" onClick={() => setIsEmail(false)}>✖</button>
-                            <FontAwesomeIcon icon={faXTwitter} style={{ width: '100%', textAlign: 'center', margin: '-80px 0 10px 5%', fontSize: '40px' }} />
+                            <FontAwesomeIcon icon={faXTwitter} style={{  textAlign: 'center', margin: '0px 0 10px 5%', fontSize: '40px' }} />
                         </div>
-                        <h1 style={{ width: '80%', marginLeft: '10%', fontWeight: '100' }}>Enter Your Password</h1>
+                        <h1 >Enter Your Password</h1>
 
-                        <input type="email" placeholder="Phone,Email or Username" className="modal-input" value={email} disabled />
-                        <input type="password" placeholder="Password" className="modal-input" onChange={(e) => setPassword(e.target.value)} />
-                        <button className="modal-button" style={{ backgroundColor: 'white', width: '80%', marginLeft: '10%', color: 'black' }} type='submit'>Next</button>
-                        <button className="welcome-button signin-btn" style={{ width: '80%', marginLeft: '10%', color: 'white' }} type='submit'>Forgot Password</button>
-                        <div className="not-account">
-                            <p>Don't have an account?</p>
+                        <input type="email" placeholder="Phone,Email or Username" className="password-input" value={email} disabled />
+                        <input type="password" placeholder="Password" className="password-input" onChange={(e) => setPassword(e.target.value)} />
+                        <button  style={{color: '#0d8af0',border:'none',backgroundColor:'black' }} type='submit'>Forgot Password</button>
+                        <div className='footer-password-btn'>
+                        <button className="password-button"  type='submit'>Log in</button>
+                        <div className="password-not-account">
+                            <span>Don't have an account?</span>
                             <button type='button' onClick={()=>setIsModalOpen(true)}>Sign up</button>
+                        </div>
                         </div>
                     </form>
                 </div>

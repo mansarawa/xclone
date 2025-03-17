@@ -12,9 +12,9 @@
 }
 .left-menu{
     height: 100%;
-    margin-left: 10%;
+    margin-left: 0%;
     width: 17vw;
-    border-right: 1px solid gray;
+    border-right: 1px solid #71767b;
     /* opacity: 40.0%; */
 }
 .right-menu{
