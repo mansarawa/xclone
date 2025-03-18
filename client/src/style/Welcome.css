@@ -4,6 +4,7 @@
     color: white;
     min-height: 100vh;
     font-family: sans-serif;
+    overflow-y: scroll;
     
 }
 
@@ -37,16 +38,21 @@
     color: #e7e9ea;
     font-size: 75px;
     font-weight: bolder;
-    font-weight: 600;
-    
+    font-weight: 700;
+    word-wrap: break-word;
     margin-bottom: 5%;
+    font-family: inherit;
 }
 .welcome-right h2{
+   
     font-size: large;
     margin: 10% 0 2% 0;
 }
 .welcome-right h3{
-    font-weight: bolder;
+    color: #e7e9ea;
+    font-family: inherit;
+    word-wrap: break-word;
+    font-weight: 700;
     font-size: 30px;
     margin-bottom: 3%;
 }
@@ -58,7 +64,7 @@
 }
 /* Buttons */
 .welcome-button {
-    width: 50%;
+    width: 45%;
     text-align: center;
     display: flex;
     align-items: center;
@@ -66,7 +72,7 @@
     
     margin-top: 5px;
     font-size: 20px;
-    padding: 7px 0;
+    padding: 5px 0;
     border-radius: 30px;
     cursor: pointer;
 }
@@ -83,9 +89,10 @@
 }
 
 .create-account {
-    padding: 2%;
+    padding: 10px;
     font-size: 18px;
     color: white;
+    font-weight: 600;
     background-color: #1d9bf0;
 }
 
@@ -94,7 +101,7 @@
     font-size: 18px;
     color: #1d9bf0;
     margin-top: 2%;
-    padding: 2%;
+    padding: 15px 10px;
     background-color: black;
     border: 1px solid silver;
 }
@@ -119,7 +126,9 @@
 }
 .twitter-icon{
     color: #e7e9ea;
-    font-size: 400px;
+    width: 80%;
+    font-size: 370px;
+    margin-left: 20%;
 }
 .footer-links button {
     cursor: pointer;
@@ -496,6 +505,8 @@
         font-size: 20px;
     }
     .twitter-icon{
+        margin: 0%;
+        width: auto;
         font-size: 50px;
     }
     .terms-text {
